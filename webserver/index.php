@@ -6,7 +6,7 @@
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<title>Simple Lightbox - Responsive touch friendly Image lightbox</title>
 	<link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
-	<link href='../dist/simplelightbox.min.css' rel='stylesheet' type='text/css'>
+	<link href='/dist/simplelightbox.min.css' rel='stylesheet' type='text/css'>
 	<link href='demo.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -16,7 +16,7 @@
 			
 <?php
 // Ordnername 
-$ordner = "images"; //auch komplette Pfade möglich ($ordner = "download/files";)
+$ordner = "images"; //auch komplette Pfade mÃ¶glich ($ordner = "download/files";)
  
 // Ordner auslesen und Array in Variable speichern
 $alledateien = scandir($ordner); // Sortierung A-Z
@@ -28,16 +28,16 @@ foreach ($alledateien as $datei) {
  
  // Zusammentragen der Dateiinfo
  $dateiinfo = pathinfo($ordner."/".$datei); 
- //Folgende Variablen stehen nach pathinfo zur Verfügung
+ //Folgende Variablen stehen nach pathinfo zur VerfÃ¼gung
  // $dateiinfo['filename'] =Dateiname ohne Dateiendung  *erst mit PHP 5.2
  // $dateiinfo['dirname'] = Verzeichnisname
  // $dateiinfo['extension'] = Dateityp -/endung
  // $dateiinfo['basename'] = voller Dateiname mit Dateiendung
  
 
- // scandir liest alle Dateien im Ordner aus, zusätzlich noch "." , ".." als Ordner
+ // scandir liest alle Dateien im Ordner aus, zusÃ¤tzlich noch "." , ".." als Ordner
  // Nur echte Dateien anzeigen lassen und keine "Punkt" Ordner
- // _notes ist eine Ergänzung für Dreamweaver Nutzer, denn DW legt zur besseren Synchronisation diese Datei in den Orndern ab
+ // _notes ist eine ErgÃ¤nzung fÃ¼r Dreamweaver Nutzer, denn DW legt zur besseren Synchronisation diese Datei in den Orndern ab
  if ($datei != "." && $datei != ".."  && $datei != "_notes") { 
  ?>
 <a href="<?php echo $dateiinfo['dirname']."/".$dateiinfo['basename'];?>">
