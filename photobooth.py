@@ -71,7 +71,6 @@ def set_demensions(img_w, img_h):
 
 # display one image on screen
 
-
 def show_image(image_path):
 
 	# clear the screen
@@ -159,7 +158,17 @@ print('Press Ctrl+C to exit')
 # Dauersschleife
 while 1:
   show_image("/home/pi/photobooth/intro.png")
-  
+  for event in pygame.event.get():
+  # Spiel beenden, wenn wir ein QUIT-Event finden.
+      if event.type == pygame.QUIT:
+          running = False
+ 
+            # Wir interessieren uns auch für "Taste gedrückt"-Events.
+      if event.type == pygame.KEYDOWN:
+                # Wenn Escape gedrückt wird, posten wir ein QUIT-Event in Pygames Event-Warteschlange.
+          if event.key == pygame.K_ESCAPE:
+              pygame.event.post(pygame.event.Event(pygame.QUIT))
+              
    # LED immer ausmachen
   GPIO.output(7, GPIO.LOW)
 
