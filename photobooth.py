@@ -105,7 +105,7 @@ def countdown_overlay(ggg):
   n=4
   for i  in range(1,n+1):
 	#gc.collect()
-    img = Image.open('/home/pi/photobooth/s'+str(i)+'.png')
+    img = Image.open('/home/pi/photobooth/pose'+str(i)+'.png')
     pad = Image.new('RGB', (
       ((img.size[0] + 31) // 32) * 32,
       ((img.size[1] + 15) // 16) * 16,
@@ -162,13 +162,16 @@ while 1:
   # Spiel beenden, wenn wir ein QUIT-Event finden.
       if event.type == pygame.QUIT:
           running = False
+          pygame.quit()
  
             # Wir interessieren uns auch für "Taste gedrückt"-Events.
       if event.type == pygame.KEYDOWN:
                 # Wenn Escape gedrückt wird, posten wir ein QUIT-Event in Pygames Event-Warteschlange.
           if event.key == pygame.K_ESCAPE:
               pygame.event.post(pygame.event.Event(pygame.QUIT))
-              
+              pygame.quit()
+          elif event.key == pygame.K_SPACE:
+              shoot()
    # LED immer ausmachen
   GPIO.output(7, GPIO.LOW)
 
