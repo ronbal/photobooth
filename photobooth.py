@@ -17,22 +17,22 @@ from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 ### Variables that Change ###
 #############################
 # Do not change these variables, as the code will change it anyway
-monitor_w = 320    # width of the display monitor
-monitor_h = 240
+monitor_w = 1920    # width of the display monitor
+monitor_h = 1080    # height of the display monitor
 transform_x = monitor_w # how wide to scale the jpg when replaying
 transfrom_y = monitor_h # how high to scale the jpg when replaying
 offset_x = 0 # how far off to left corner to display photos
 offset_y = 0 # how far off to left corner to display photos
-file_path ="/home/pi/photobooth/"
-server_path="/var/www/html/demo/"
+file_path ="/home/pi/photobooth/" #path of the photobooth programm
+server_path="/var/www/html/demo/" #path to the Webserverfiles
 
 # initialize pygame
 pygame.init()
 pygame.display.set_mode((monitor_w, monitor_h))
 screen = pygame.display.get_surface()
 pygame.display.set_caption('Photo Booth Pics')
-#pygame.mouse.set_visible(False) #hide the mouse cursor
-#pygame.display.toggle_fullscreen()
+pygame.mouse.set_visible(False) #hide the mouse cursor
+pygame.display.toggle_fullscreen()
 def set_demensions(img_w, img_h):
 	# Note this only works when in booting in desktop mode. 
 	# When running in terminal, the size is not correct (it displays small). Why?
