@@ -24,7 +24,7 @@ transfrom_y = monitor_h # how high to scale the jpg when replaying
 offset_x = 0 # how far off to left corner to display photos
 offset_y = 0 # how far off to left corner to display photos
 file_path ="/home/pi/photobooth/" #path of the photobooth programm
-server_path="/var/www/html/demo/" #path to the Webserverfiles
+server_path="/var/www/html/" #path to the Webserverfiles
 
 # initialize pygame
 pygame.init()
