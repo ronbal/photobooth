@@ -110,9 +110,9 @@ def starting():
     subprocess.call("composite -gravity center "+str(file_path)+"overlay.png  "+str(file_path)+"montage_temp.jpg  "+str(file_path)+"montage.jpg", shell = True)
     # LED a
     zeit=time.strftime('%d-%I.%M.%S') 
-    subprocess.call('cp '+str(file_path)+'montage.jpg '+str(server_path)+'images/karte'+zeit+'.jpg', shell=True)
+    subprocess.call('sudo cp '+str(file_path)+'montage.jpg '+str(server_path)+'images/karte'+zeit+'.jpg', shell=True)
     print('collage')
-    subprocess.call('convert '+str(file_path)+'montage.jpg -resize 320x240 '+str(server_path)+'thumbs/karte'+zeit+'.jpg',shell=True)
+    subprocess.call('sudo convert '+str(file_path)+'montage.jpg -resize 320x240 '+str(server_path)+'thumbs/karte'+zeit+'.jpg',shell=True)
     GPIO.output(7, GPIO.LOW)
     camera.remove_overlay(o)
     del img
@@ -141,8 +141,8 @@ def shoot():
     countdown_overlay('test')
     camera.capture(str(file_path)+'image'+str(x)+'.jpg')
     zeit=time.strftime('%d-%I.%M.%S') 
-    subprocess.call('cp '+str(file_path)+'image'+str(x)+'.jpg '+str(server_path)+'images/image'+zeit+'.jpg', shell=True)
-    subprocess.call('convert '+str(file_path)+'image'+str(x)+'.jpg -resize 320x240 '+str(server_path)+'thumbs/image'+zeit+'.jpg',shell=True)
+    subprocess.call('sudo cp '+str(file_path)+'image'+str(x)+'.jpg '+str(server_path)+'images/image'+zeit+'.jpg', shell=True)
+    subprocess.call('sudo convert '+str(file_path)+'image'+str(x)+'.jpg -resize 320x240 '+str(server_path)+'thumbs/image'+zeit+'.jpg',shell=True)
 
     sleep(1)
   return;
