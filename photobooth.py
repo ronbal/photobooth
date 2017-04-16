@@ -203,7 +203,7 @@ print('Press Ctrl+C to exit')
 
 # Dauersschleife
 while 1:
-  show_image(str(file_path)+'intro.png')
+  show_image(str(file_path)+'intro.jpg')
   for event in pygame.event.get():
   # Spiel beenden, wenn wir ein QUIT-Event finden.
       if event.type == pygame.QUIT:
