@@ -92,6 +92,7 @@ def show_image(image_path):
 	pygame.display.flip()
 
 def starting():
+    camera.resolution =(1980,1020)
     camera.start_preview()
     shoot()
     GPIO.output(7, GPIO.HIGH) 
