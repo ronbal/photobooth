@@ -148,10 +148,10 @@ def shoot():
   return;
 
 def countdown_overlay(ggg):
-  n=4
+  n=10
   for i  in range(1,n+1):
 	#gc.collect()
-    img = Image.open(str(file_path)+str(i)+'.png')
+    img = Image.open(str(file_path)+'media/'+str(i)+'.jpg')
     pad = Image.new('RGB', (
       ((img.size[0] + 31) // 32) * 32,
       ((img.size[1] + 15) // 16) * 16,
