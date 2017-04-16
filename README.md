@@ -16,10 +16,24 @@ The program shoots 4 Pictures per session. After shooting the Pictures the progr
 
 #Installation
 
+first Update & upgrade
+```
+sudo apt-get update
+sudo apt-get upgrade
+```
+install Apache Webserver:
+sudo apt-get install apache2
+
+install php5:
+sudo apt-get install php5
+
+
 Please add the folders:
-/var/www/hmtl/demo/images
-/var/www/hmtl/demo/thumbs
-/home/pi/photobooth
+/var/www/hmtl/images
+/var/www/hmtl/thumbs
+
+get the repository:
+git clone https://github.com/ronbal/photobooth
 
 copy the Photoboth Folder to your /home/pi/photobooth folder
 copy the Webserver Files to you /var/www/hmtl/demo/
