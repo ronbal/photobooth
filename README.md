@@ -38,7 +38,9 @@ git clone https://github.com/ronbal/photobooth
 ### Please add the folders:
 /var/www/hmtl/images
 /var/www/hmtl/thumbs
-
+```
+mkdir /var/www/html/images
+mkdir /var/www/html/thumbs
 ```
 sudo cp -R /home/pi/photobooth/webserver/* /var/www/html
 ```
