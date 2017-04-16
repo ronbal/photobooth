@@ -33,6 +33,7 @@ screen = pygame.display.get_surface()
 pygame.display.set_caption('Photo Booth Pics')
 pygame.mouse.set_visible(False) #hide the mouse cursor
 pygame.display.toggle_fullscreen()
+camera.resolution=(1980,1020)
 def set_demensions(img_w, img_h):
 	# Note this only works when in booting in desktop mode. 
 	# When running in terminal, the size is not correct (it displays small). Why?
