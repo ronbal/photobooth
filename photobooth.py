@@ -87,6 +87,49 @@ def show_image(image_path):
 	img = pygame.transform.scale(img, (transform_x,transfrom_y))
 	screen.blit(img,(offset_x,offset_y))
 	pygame.display.flip()
+
+def starting():
+    camera.start_preview()
+    shoot()
+    GPIO.output(7, GPIO.HIGH) 
+    img = Image.open('/home/pi/photobooth/processing.png')
+    pad = Image.new('RGB', (
+      ((img.size[0] + 31) // 32) * 32,
+      ((img.size[1] + 15) // 16) * 16,
+      ))
+    pad.paste(img, (0, 0))
+    o = camera.add_overlay(pad.tostring(), size=img.size)
+    o.alpha = 255 #128
+    o.layer = 3
+    
+    print('Montage')
+    subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +50+50 /home/pi/photobooth/image1.jpg /home/pi/photobooth/image2.jpg /home/pi/photobooth/image3.jpg /home/pi/photobooth/image4.jpg  /home/pi/photobooth/montage_temp.jpg", shell=True)
+    subprocess.call("composite -gravity center overlay.png  montage_temp.jpg  montage.jpg", shell = True)
+    # LED a
+    zeit=time.strftime('%d-%I.%M.%S') 
+    subprocess.call('cp /home/pi/photobooth/montage.jpg /var/www/html/demo/images/karte'+zeit+'.jpg', shell=True)
+    print('collage')
+    subprocess.call('convert /home/pi/photobooth/montage.jpg -resize 320x240 /var/www/html/demo/thumbs/karte'+zeit+'.jpg',shell=True)
+    GPIO.output(7, GPIO.LOW)
+    camera.remove_overlay(o)
+    del img
+    del pad
+    img = Image.open('/home/pi/photobooth/montage.jpg')
+    pad = Image.new('RGB', (
+      ((img.size[0] + 31) // 32) * 32,
+      ((img.size[1] + 15) // 16) * 16,
+      ))
+    pad.paste(img, (0, 0))
+    o = camera.add_overlay(pad.tostring(), size=img.size)
+    o.alpha = 255 #128
+    o.layer = 3
+    sleep(5)
+    camera.remove_overlay(o)
+    del img
+    del pad
+  
+    camera.stop_preview()
+    return;
 	
 def shoot():
   y=4
@@ -171,7 +214,7 @@ while 1:
               pygame.event.post(pygame.event.Event(pygame.QUIT))
               pygame.quit()
           elif event.key == pygame.K_SPACE:
-              shoot()
+              starting()
    # LED immer ausmachen
   GPIO.output(7, GPIO.LOW)
 
@@ -185,45 +228,8 @@ while 1:
     
     
   if GPIO.input(16) == GPIO.LOW:
-    # LED an 
-    camera.start_preview()
-    shoot()
-    GPIO.output(7, GPIO.HIGH) 
-    img = Image.open('/home/pi/photobooth/processing.png')
-    pad = Image.new('RGB', (
-      ((img.size[0] + 31) // 32) * 32,
-      ((img.size[1] + 15) // 16) * 16,
-      ))
-    pad.paste(img, (0, 0))
-    o = camera.add_overlay(pad.tostring(), size=img.size)
-    o.alpha = 255 #128
-    o.layer = 3
-    
-    print('Montage')
-    subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +1+1 /home/pi/photobooth/image1.jpg /home/pi/photobooth/image2.jpg /home/pi/photobooth/image3.jpg /home/pi/photobooth/image4.jpg  /home/pi/photobooth/montage.jpg", shell=True)
-    # LED a
-    zeit=time.strftime('%d-%I.%M.%S') 
-    subprocess.call('cp /home/pi/photobooth/montage.jpg /var/www/html/demo/images/karte'+zeit+'.jpg', shell=True)
-    subprocess.call('convert /home/pi/photobooth/montage.jpg -resize 320x240 /var/www/html/demo/thumbs/karte'+zeit+'.jpg',shell=True)
-    GPIO.output(7, GPIO.LOW)
-    camera.remove_overlay(o)
-    del img
-    del pad
-    img = Image.open('/home/pi/photobooth/montage.jpg')
-    pad = Image.new('RGB', (
-      ((img.size[0] + 31) // 32) * 32,
-      ((img.size[1] + 15) // 16) * 16,
-      ))
-    pad.paste(img, (0, 0))
-    o = camera.add_overlay(pad.tostring(), size=img.size)
-    o.alpha = 255 #128
-    o.layer = 3
-    sleep(5)
-    camera.remove_overlay(o)
-    del img
-    del pad
-  
-    camera.stop_preview()
+    # LED an
+    starting()
 
    
     
