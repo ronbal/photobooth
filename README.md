@@ -40,7 +40,7 @@ git clone https://github.com/ronbal/photobooth
 /var/www/hmtl/thumbs
 
 ```
-sudo cp -R /home/pi/photobooth/webserver /var/www/html
+sudo cp -R /home/pi/photobooth/webserver/* /var/www/html
 ```
 copy the Photoboth Folder to your /home/pi/photobooth folder
 copy the Webserver Files to you /var/www/hmtl/demo/
