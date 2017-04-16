@@ -17,8 +17,8 @@ from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 ### Variables that Change ###
 #############################
 # Do not change these variables, as the code will change it anyway
-monitor_w = 1920    # width of the display monitor
-monitor_h = 1080    # height of the display monitor
+monitor_w = 1024   # width of the display monitor
+monitor_h = 768   # height of the display monitor
 transform_x = monitor_w # how wide to scale the jpg when replaying
 transfrom_y = monitor_h # how high to scale the jpg when replaying
 offset_x = 0 # how far off to left corner to display photos
@@ -106,7 +106,7 @@ def starting():
     o.layer = 3
     
     print('Montage')
-    subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +50+50 "+str(file_path)+"/image1.jpg "+str(file_path)+"image2.jpg "+str(file_path)+"image3.jpg "+str(file_path)+"image4.jpg "+str(file_path)+"montage_temp.jpg", shell=True)
+    subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +50+50 "+str(file_path)+"/image1.jpg "+str(file_path)+"image2.jpg "+str(file_path)+"image3.jpg "+str(file_path)+"montage_temp.jpg", shell=True)
     subprocess.call("composite -gravity center "+str(file_path)+"overlay.png  "+str(file_path)+"montage_temp.jpg  "+str(file_path)+"montage.jpg", shell = True)
     # LED a
     zeit=time.strftime('%d-%I.%M.%S') 
@@ -135,7 +135,7 @@ def starting():
     return;
 	
 def shoot():
-  y=4
+  y=3
   for x  in range(1,y+1):
     print('Foto '+ str(x))
     countdown_overlay('test')
@@ -151,7 +151,7 @@ def countdown_overlay(ggg):
   n=4
   for i  in range(1,n+1):
 	#gc.collect()
-    img = Image.open(str(file_path)+'pose'+str(i)+'.png')
+    img = Image.open(str(file_path)+str(i)+'.png')
     pad = Image.new('RGB', (
       ((img.size[0] + 31) // 32) * 32,
       ((img.size[1] + 15) // 16) * 16,
