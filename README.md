@@ -34,6 +34,12 @@ sudo apt-get install php5
 git clone https://github.com/ronbal/photobooth
 ```
 
+###install imagemagick
+```
+sudo apt-get install imagemagick
+```
+
+
 
 ### Please add the folders:
 /var/www/hmtl/images
