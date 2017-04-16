@@ -48,7 +48,15 @@ sudo apt-get install imagemagick
 mkdir /var/www/html/images
 mkdir /var/www/html/thumbs
 ```
+
+
+### copy the Webserver Files to you /var/www/hmtl/demo/
+```
 sudo cp -R /home/pi/photobooth/webserver/* /var/www/html
 ```
-copy the Photoboth Folder to your /home/pi/photobooth folder
-copy the Webserver Files to you /var/www/hmtl/demo/
+### to autostart on reboot:
+```
+sudo nano /etc/rc.local
+```
+add the line
+python3 /home/pi/photobooth/photobooth.py
