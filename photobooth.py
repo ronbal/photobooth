@@ -11,21 +11,24 @@ import os
 from PIL import Image
 import pygame
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
-import config # this is the config python file config.py
 
 
 #############################
 ### Variables that Change ###
 #############################
 # Do not change these variables, as the code will change it anyway
-transform_x = config.monitor_w # how wide to scale the jpg when replaying
-transfrom_y = config.monitor_h # how high to scale the jpg when replaying
+monitor_w = 320    # width of the display monitor
+monitor_h = 240
+transform_x = monitor_w # how wide to scale the jpg when replaying
+transfrom_y = monitor_h # how high to scale the jpg when replaying
 offset_x = 0 # how far off to left corner to display photos
 offset_y = 0 # how far off to left corner to display photos
+file_path ="/home/pi/photobooth/"
+server_path="/var/www/html/demo/"
 
 # initialize pygame
 pygame.init()
-pygame.display.set_mode((config.monitor_w, config.monitor_h))
+pygame.display.set_mode((monitor_w, monitor_h))
 screen = pygame.display.get_surface()
 pygame.display.set_caption('Photo Booth Pics')
 #pygame.mouse.set_visible(False) #hide the mouse cursor
@@ -38,16 +41,16 @@ def set_demensions(img_w, img_h):
     global transform_y, transform_x, offset_y, offset_x
 
     # based on output screen resolution, calculate how to display
-    ratio_h = (config.monitor_w * img_h) / img_w 
+    ratio_h = (monitor_w * img_h) / img_w 
 
-    if (ratio_h < config.monitor_h):
+    if (ratio_h < monitor_h):
         #Use horizontal black bars
         #print "horizontal black bars"
         transform_y = ratio_h
-        transform_x = config.monitor_w
-        offset_y = (config.monitor_h - ratio_h) / 2
+        transform_x = monitor_w
+        offset_y = (monitor_h - ratio_h) / 2
         offset_x = 0
-    elif (ratio_h > config.monitor_h):
+    elif (ratio_h > monitor_h):
         #Use vertical black bars
         #print "vertical black bars"
         transform_x = (config.monitor_h * img_w) / img_h
@@ -92,7 +95,7 @@ def starting():
     camera.start_preview()
     shoot()
     GPIO.output(7, GPIO.HIGH) 
-    img = Image.open('/home/pi/photobooth/processing.png')
+    img = Image.open(str(file_path)+'processing.png')
     pad = Image.new('RGB', (
       ((img.size[0] + 31) // 32) * 32,
       ((img.size[1] + 15) // 16) * 16,
@@ -103,18 +106,18 @@ def starting():
     o.layer = 3
     
     print('Montage')
-    subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +50+50 /home/pi/photobooth/image1.jpg /home/pi/photobooth/image2.jpg /home/pi/photobooth/image3.jpg /home/pi/photobooth/image4.jpg  /home/pi/photobooth/montage_temp.jpg", shell=True)
-    subprocess.call("composite -gravity center overlay.png  montage_temp.jpg  montage.jpg", shell = True)
+    subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +50+50 "+str(file_path)+"/image1.jpg "+str(file_path)+"image2.jpg "+str(file_path)+"image3.jpg "+str(file_path)+"image4.jpg "+str(file_path)+"montage_temp.jpg", shell=True)
+    subprocess.call("composite -gravity center "+str(file_path)+"overlay.png  "+str(file_path)+"montage_temp.jpg  "+str(file_path)+"montage.jpg", shell = True)
     # LED a
     zeit=time.strftime('%d-%I.%M.%S') 
-    subprocess.call('cp /home/pi/photobooth/montage.jpg /var/www/html/demo/images/karte'+zeit+'.jpg', shell=True)
+    subprocess.call('cp '+str(file_path)+'montage.jpg '+str(server_path)+'images/karte'+zeit+'.jpg', shell=True)
     print('collage')
-    subprocess.call('convert /home/pi/photobooth/montage.jpg -resize 320x240 /var/www/html/demo/thumbs/karte'+zeit+'.jpg',shell=True)
+    subprocess.call('convert '+str(file_path)+'montage.jpg -resize 320x240 '+str(server_path)+'thumbs/karte'+zeit+'.jpg',shell=True)
     GPIO.output(7, GPIO.LOW)
     camera.remove_overlay(o)
     del img
     del pad
-    img = Image.open('/home/pi/photobooth/montage.jpg')
+    img = Image.open(str(file_path)+'montage.jpg')
     pad = Image.new('RGB', (
       ((img.size[0] + 31) // 32) * 32,
       ((img.size[1] + 15) // 16) * 16,
@@ -136,10 +139,10 @@ def shoot():
   for x  in range(1,y+1):
     print('Foto '+ str(x))
     countdown_overlay('test')
-    camera.capture('/home/pi/photobooth/image'+str(x)+'.jpg')
+    camera.capture(str(file_path)+'image'+str(x)+'.jpg')
     zeit=time.strftime('%d-%I.%M.%S') 
-    subprocess.call('cp /home/pi/photobooth/image'+str(x)+'.jpg /var/www/html/demo/images/image'+zeit+'.jpg', shell=True)
-    subprocess.call('convert /home/pi/photobooth/image'+str(x)+'.jpg -resize 320x240 /var/www/html/demo/thumbs/image'+zeit+'.jpg',shell=True)
+    subprocess.call('cp '+str(file_path)+'image'+str(x)+'.jpg '+str(server_path)+'images/image'+zeit+'.jpg', shell=True)
+    subprocess.call('convert '+str(file_path)+'image'+str(x)+'.jpg -resize 320x240 '+str(server_path)+'thumbs/image'+zeit+'.jpg',shell=True)
 
     sleep(1)
   return;
@@ -148,7 +151,7 @@ def countdown_overlay(ggg):
   n=4
   for i  in range(1,n+1):
 	#gc.collect()
-    img = Image.open('/home/pi/photobooth/pose'+str(i)+'.png')
+    img = Image.open(str(file_path)+'pose'+str(i)+'.png')
     pad = Image.new('RGB', (
       ((img.size[0] + 31) // 32) * 32,
       ((img.size[1] + 15) // 16) * 16,
@@ -200,7 +203,7 @@ print('Press Ctrl+C to exit')
 
 # Dauersschleife
 while 1:
-  show_image("/home/pi/photobooth/intro.png")
+  show_image(str(file_path)+'intro.png')
   for event in pygame.event.get():
   # Spiel beenden, wenn wir ein QUIT-Event finden.
       if event.type == pygame.QUIT:
