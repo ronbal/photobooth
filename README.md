@@ -60,3 +60,18 @@ sudo nano /etc/rc.local
 ```
 add the line
 python3 /home/pi/photobooth/photobooth.py
+
+```
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+python3 /home/pi/photobooth/photobooth.py&
+exit 0
+```
+
+
