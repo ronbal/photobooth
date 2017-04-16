@@ -17,8 +17,8 @@ from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 ### Variables that Change ###
 #############################
 # Do not change these variables, as the code will change it anyway
-monitor_w = 1024   # width of the display monitor
-monitor_h = 768   # height of the display monitor
+monitor_w = 1920   # width of the display monitor
+monitor_h = 1080   # height of the display monitor
 transform_x = monitor_w # how wide to scale the jpg when replaying
 transfrom_y = monitor_h # how high to scale the jpg when replaying
 offset_x = 0 # how far off to left corner to display photos
