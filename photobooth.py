@@ -17,8 +17,8 @@ from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 ### Variables that Change ###
 #############################
 # Do not change these variables, as the code will change it anyway
-monitor_w = 1920   # width of the display monitor
-monitor_h = 1080   # height of the display monitor
+monitor_w = 1080   # width of the display monitor
+monitor_h = 1920   # height of the display monitor
 transform_x = monitor_w # how wide to scale the jpg when replaying
 transfrom_y = monitor_h # how high to scale the jpg when replaying
 offset_x = 0 # how far off to left corner to display photos
@@ -53,15 +53,15 @@ def set_demensions(img_w, img_h):
     elif (ratio_h > monitor_h):
         #Use vertical black bars
         #print "vertical black bars"
-        transform_x = (config.monitor_h * img_w) / img_h
-        transform_y = config.monitor_h
-        offset_x = (config.monitor_w - transform_x) / 2
+        transform_x = (monitor_h * img_w) / img_h
+        transform_y = monitor_h
+        offset_x = (monitor_w - transform_x) / 2
         offset_y = 0
     else:
         #No need for black bars as photo ratio equals screen ratio
         #print "no black bars"
-        transform_x = config.monitor_w
-        transform_y = config.monitor_h
+        transform_x = monitor_w
+        transform_y = monitor_h
         offset_y = offset_x = 0
 
     # uncomment these lines to troubleshoot screen ratios
@@ -200,10 +200,10 @@ def check_light():
 		
 print('Push Button')
 print('Press Ctrl+C to exit')
-
+show_image(str(file_path)+'introh.jpg')
 # Dauersschleife
 while 1:
-  show_image(str(file_path)+'intro.jpg')
+  
   for event in pygame.event.get():
   # Spiel beenden, wenn wir ein QUIT-Event finden.
       if event.type == pygame.QUIT:
