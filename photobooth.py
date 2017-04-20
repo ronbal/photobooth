@@ -161,7 +161,7 @@ def countdown_overlay(ggg):
       ))
     pad.paste(img, (0, 0))
     o = camera.add_overlay(pad.tostring(), size=img.size)
-    o.alpha = 40 #128
+    o.alpha = 60 #128
     o.layer = 3
     sleep(1)
     camera.remove_overlay(o)
