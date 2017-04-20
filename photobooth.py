@@ -146,13 +146,13 @@ def shoot():
     zeit=time.strftime('%d-%I.%M.%S') 
     subprocess.call('sudo cp '+str(file_path)+'image'+str(x)+'.jpg '+str(server_path)+'images/image'+zeit+'.jpg', shell=True)
     subprocess.call('sudo convert '+str(file_path)+'image'+str(x)+'.jpg -resize 320x240 '+str(server_path)+'thumbs/image'+zeit+'.jpg',shell=True)
-
-    sleep(2)
   return;
+
 
 def countdown_overlay(ggg):
   countdown=4
-  for i  in range(1,countdown+1):
+  
+  for i  in range(countdown,0,-1):
 	#gc.collect()
     img = Image.open(str(file_path)+'media/'+str(i)+'.jpg')
     pad = Image.new('RGB', (
