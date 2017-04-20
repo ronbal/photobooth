@@ -78,7 +78,7 @@ def set_demensions(img_w, img_h):
 def show_image(image_path):
 
 	# clear the screen
-	screen.fill( (0,0,0) )
+	screen.fill( (255,255,255))
 
 	# load the image
 	img = pygame.image.load(image_path)
@@ -93,21 +93,11 @@ def show_image(image_path):
 	pygame.display.flip()
 
 def starting():
-    camera.iso = 1600
-    camera.rotation = 90
-    camera.start_preview()
-    shoot()
-    GPIO.output(7, GPIO.HIGH) 
-    img = Image.open(str(file_path)+'processing.png')
-    pad = Image.new('RGB', (
-      ((img.size[0] + 31) // 32) * 32,
-      ((img.size[1] + 15) // 16) * 16,
-      ))
-    pad.paste(img, (0, 0))
-    o = camera.add_overlay(pad.tostring(), size=img.size)
-    o.alpha = 255 #128
-    o.layer = 3
     
+    shoot()
+    show_image(str(file_path)+'media/processing.jpg')    
+    camera.stop_preview()
+    GPIO.output(7, GPIO.HIGH) 
     print('Montage')
     subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +50+50 "+str(file_path)+"/image1.jpg "+str(file_path)+"image2.jpg "+str(file_path)+"image3.jpg "+str(file_path)+"montage_temp.jpg", shell=True)
     subprocess.call("composite -gravity center "+str(file_path)+"overlay.png  "+str(file_path)+"montage_temp.jpg  "+str(file_path)+"montage.jpg", shell = True)
@@ -117,9 +107,6 @@ def starting():
     print('collage')
     subprocess.call('sudo convert '+str(file_path)+'montage.jpg -resize 320x240 '+str(server_path)+'thumbs/karte'+zeit+'.jpg',shell=True)
     GPIO.output(7, GPIO.LOW)
-    camera.remove_overlay(o)
-    del img
-    del pad
     img = Image.open(str(file_path)+'montage.jpg')
     pad = Image.new('RGB', (
       ((img.size[0] + 31) // 32) * 32,
@@ -130,29 +117,42 @@ def starting():
     o.alpha = 255 #128
     o.layer = 3
     sleep(5)
+    show_image(str(file_path)+'intro.jpg')  
     camera.remove_overlay(o)
     del img
     del pad
   
-    camera.stop_preview()
+    
     return;
 	
 def shoot():
   y=3
   for x  in range(1,y+1):
     print('Foto '+ str(x))
+    if x >1:
+        show_image(str(file_path)+'media/nextone.jpg')
+    else:
+        show_image(str(file_path)+'media/getready.jpg')
+    sleep(2)
+    camera.iso = 1600
+    camera.rotation = 90
+    camera.start_preview()
     countdown_overlay('test')
+    show_image(str(file_path)+'media/smile.jpg')
+    camera.stop_preview()
+    sleep(1)
     camera.capture(str(file_path)+'image'+str(x)+'.jpg')
+    show_image(str(file_path)+'image'+str(x)+'.jpg')
     zeit=time.strftime('%d-%I.%M.%S') 
     subprocess.call('sudo cp '+str(file_path)+'image'+str(x)+'.jpg '+str(server_path)+'images/image'+zeit+'.jpg', shell=True)
     subprocess.call('sudo convert '+str(file_path)+'image'+str(x)+'.jpg -resize 320x240 '+str(server_path)+'thumbs/image'+zeit+'.jpg',shell=True)
 
-    sleep(1)
+    sleep(2)
   return;
 
 def countdown_overlay(ggg):
-  n=10
-  for i  in range(1,n+1):
+  countdown=4
+  for i  in range(1,countdown+1):
 	#gc.collect()
     img = Image.open(str(file_path)+'media/'+str(i)+'.jpg')
     pad = Image.new('RGB', (
@@ -161,7 +161,7 @@ def countdown_overlay(ggg):
       ))
     pad.paste(img, (0, 0))
     o = camera.add_overlay(pad.tostring(), size=img.size)
-    o.alpha = 60 #128
+    o.alpha = 90 #128
     o.layer = 3
     sleep(1)
     camera.remove_overlay(o)
@@ -203,10 +203,10 @@ def check_light():
 		
 print('Push Button')
 print('Press Ctrl+C to exit')
-show_image(str(file_path)+'intro.jpg')
+
 # Dauersschleife
 while 1:
-  
+  show_image(str(file_path)+'intro.jpg')  
   for event in pygame.event.get():
   # Spiel beenden, wenn wir ein QUIT-Event finden.
       if event.type == pygame.QUIT:
