@@ -17,10 +17,8 @@ from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 ### Variables that Change ###
 #############################
 # Do not change these variables, as the code will change it anyway
-monitor_w = 1080   # width of the display monitor
-monitor_h = 1920   # height of the display monitor
-transform_x = monitor_w # how wide to scale the jpg when replaying
-transfrom_y = monitor_h # how high to scale the jpg when replaying
+
+
 offset_x = 0 # how far off to left corner to display photos
 offset_y = 0 # how far off to left corner to display photos
 file_path ="/home/pi/photobooth/" #path of the photobooth programm
@@ -28,6 +26,9 @@ server_path="/var/www/html/" #path to the Webserverfiles
 
 # initialize pygame
 pygame.init()
+monitor_w, monitor_h = pygame.display.Info().current_w, pygame.display.Info().current_h
+transform_x = monitor_w # how wide to scale the jpg when replaying
+transfrom_y = monitor_h # how high to scale the jpg when replaying
 pygame.display.set_mode((monitor_w, monitor_h))
 screen = pygame.display.get_surface()
 pygame.display.set_caption('Photo Booth Pics')
@@ -92,6 +93,8 @@ def show_image(image_path):
 	pygame.display.flip()
 
 def starting():
+    camera.iso = 1600
+    camera.rotation = 90
     camera.start_preview()
     shoot()
     GPIO.output(7, GPIO.HIGH) 
@@ -158,7 +161,7 @@ def countdown_overlay(ggg):
       ))
     pad.paste(img, (0, 0))
     o = camera.add_overlay(pad.tostring(), size=img.size)
-    o.alpha = 100 #128
+    o.alpha = 40 #128
     o.layer = 3
     sleep(1)
     camera.remove_overlay(o)
@@ -200,7 +203,7 @@ def check_light():
 		
 print('Push Button')
 print('Press Ctrl+C to exit')
-show_image(str(file_path)+'introh.jpg')
+show_image(str(file_path)+'intro.jpg')
 # Dauersschleife
 while 1:
   
