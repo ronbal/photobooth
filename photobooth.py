@@ -42,7 +42,7 @@ def set_demensions(img_w, img_h):
     # connect to global vars
     global transform_y, transform_x, offset_y, offset_x
 
-     based on output screen resolution, calculate how to display
+    #based on output screen resolution, calculate how to display
 #    ratio_h = (monitor_w * img_h) / img_w 
 
 #    if (ratio_h < monitor_h):
