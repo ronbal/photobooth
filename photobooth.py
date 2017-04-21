@@ -8,6 +8,7 @@ import picamera
 import time
 import subprocess
 import os
+import configparser
 from PIL import Image
 import pygame
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
@@ -124,7 +125,11 @@ def starting():
   
     
     return;
-	
+def delete():
+    subprocess.call('sudo rm -r '+str(server_path)+'images/*', shell=True)
+    subprocess.call('sudo rm -r '+str(server_path)+'thumbs/*', shell=True)
+    return;
+
 def shoot():
   y=3
   for x  in range(1,y+1):
@@ -221,6 +226,9 @@ while 1:
               pygame.quit()
           elif event.key == pygame.K_SPACE:
               starting()
+          elif event.key == pygame.K_d:
+              delete()
+                  
    # LED immer ausmachen
   GPIO.output(7, GPIO.LOW)
 
