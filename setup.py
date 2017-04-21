@@ -1,6 +1,7 @@
 import subprocess
 from subprocess import STDOUT, check_call
 import os
+import time
 WorkingDir = os.getcwd()
 print("Starting update")
 check_call(['sudo', 'apt-get', 'update', '-y'])
