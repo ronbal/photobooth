@@ -33,8 +33,8 @@ transfrom_y = monitor_h # how high to scale the jpg when replaying
 pygame.display.set_mode((monitor_w, monitor_h))
 screen = pygame.display.get_surface()
 pygame.display.set_caption('Photo Booth Pics')
-#pygame.mouse.set_visible(False) #hide the mouse cursor
-#pygame.display.toggle_fullscreen()
+pygame.mouse.set_visible(False) #hide the mouse cursor
+pygame.display.toggle_fullscreen()
 def set_demensions(img_w, img_h):
 	# Note this only works when in booting in desktop mode. 
 	# When running in terminal, the size is not correct (it displays small). Why?
@@ -42,24 +42,24 @@ def set_demensions(img_w, img_h):
     # connect to global vars
     global transform_y, transform_x, offset_y, offset_x
 
-    # based on output screen resolution, calculate how to display
+     based on output screen resolution, calculate how to display
 #    ratio_h = (monitor_w * img_h) / img_w 
-#
- #   if (ratio_h < monitor_h):
-  #      #Use horizontal black bars
-   #     #print "horizontal black bars"
-    #    transform_y = ratio_h
-     #   transform_x = monitor_w
-      #  offset_y = (monitor_h - ratio_h) / 2
-       # offset_x = 0
-   # elif (ratio_h > monitor_h):
-    #    #Use vertical black bars
-     #   #print "vertical black bars"
-      #  transform_x = (monitor_h * img_w) / img_h
-       # transform_y = monitor_h
-      #  offset_x = (monitor_w - transform_x) / 2
-      #  offset_y = 0
-   # else:
+
+#    if (ratio_h < monitor_h):
+        #Use horizontal black bars
+        #print "horizontal black bars"
+#        transform_y = ratio_h
+#        transform_x = monitor_w
+#        offset_y = (monitor_h - ratio_h) / 2
+#        offset_x = 0
+#    elif (ratio_h > monitor_h):
+        #Use vertical black bars
+        #print "vertical black bars"
+#        transform_x = (monitor_h * img_w) / img_h
+#        transform_y = monitor_h
+#        offset_x = (monitor_w - transform_x) / 2
+#        offset_y = 0
+#    else:
         #No need for black bars as photo ratio equals screen ratio
         #print "no black bars"
     transform_x = monitor_w
@@ -88,10 +88,10 @@ def show_image(image_path):
 	# set pixel dimensions based on image
 	set_demensions(img.get_width(), img.get_height())
 
-	print('transform x'+str(transform_x))
-	print('transform y'+str(transform_y))
-	print('monitor h'+str(monitor_h))
-	print('monitor w'+str(monitor_w))
+#	print('transform x'+str(transform_x))
+#	print('transform y'+str(transform_y))
+#	print('monitor h'+str(monitor_h))
+#	print('monitor w'+str(monitor_w))
 	# rescale the image to fit the current display
 	img = pygame.transform.scale(img, (transform_x,transfrom_y))
 	screen.blit(img,(offset_x,offset_y))
