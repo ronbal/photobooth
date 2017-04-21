@@ -16,6 +16,7 @@ Photobooth python Program by Ronny Schönfeld
 
 # automatic installation
 This manual starts with a newly installed raspbian.
+connect your Pi to the internet
 
 go to you home dir
 ```
