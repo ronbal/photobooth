@@ -43,36 +43,36 @@ def set_demensions(img_w, img_h):
     global transform_y, transform_x, offset_y, offset_x
 
     # based on output screen resolution, calculate how to display
-    ratio_h = (monitor_w * img_h) / img_w 
-
-    if (ratio_h < monitor_h):
-        #Use horizontal black bars
-        #print "horizontal black bars"
-        transform_y = ratio_h
-        transform_x = monitor_w
-        offset_y = (monitor_h - ratio_h) / 2
-        offset_x = 0
-    elif (ratio_h > monitor_h):
-        #Use vertical black bars
-        #print "vertical black bars"
-        transform_x = (monitor_h * img_w) / img_h
-        transform_y = monitor_h
-        offset_x = (monitor_w - transform_x) / 2
-        offset_y = 0
-    else:
+#    ratio_h = (monitor_w * img_h) / img_w 
+#
+ #   if (ratio_h < monitor_h):
+  #      #Use horizontal black bars
+   #     #print "horizontal black bars"
+    #    transform_y = ratio_h
+     #   transform_x = monitor_w
+      #  offset_y = (monitor_h - ratio_h) / 2
+       # offset_x = 0
+   # elif (ratio_h > monitor_h):
+    #    #Use vertical black bars
+     #   #print "vertical black bars"
+      #  transform_x = (monitor_h * img_w) / img_h
+       # transform_y = monitor_h
+      #  offset_x = (monitor_w - transform_x) / 2
+      #  offset_y = 0
+   # else:
         #No need for black bars as photo ratio equals screen ratio
         #print "no black bars"
-        transform_x = monitor_w
-        transform_y = monitor_h
-        offset_y = offset_x = 0
+    transform_x = monitor_w
+    transform_y = monitor_h
+    offset_y = offset_x = 0
 
     # uncomment these lines to troubleshoot screen ratios
-#     print str(img_w) + " x " + str(img_h)
-#     print "ratio_h: "+ str(ratio_h)
-#     print "transform_x: "+ str(transform_x)
-#     print "transform_y: "+ str(transform_y)
-#     print "offset_y: "+ str(offset_y)
-#     print "offset_x: "+ str(offset_x)
+#print((str(img_w)+" x "+ str(img_h))
+#print('ratio_h: '+str(ratio_h))
+#print("transform_x: "+ str(transform_x))
+#print("trans---form_y: "+ str(transform_y))
+#print("offset_y: "+ str(offset_y))
+#print("offset_x: "+ str(offset_x))
 
 # display one image on screen
 
@@ -88,6 +88,10 @@ def show_image(image_path):
 	# set pixel dimensions based on image
 	set_demensions(img.get_width(), img.get_height())
 
+	print('transform x'+str(transform_x))
+	print('transform y'+str(transform_y))
+	print('monitor h'+str(monitor_h))
+	print('monitor w'+str(monitor_w))
 	# rescale the image to fit the current display
 	img = pygame.transform.scale(img, (transform_x,transfrom_y))
 	screen.blit(img,(offset_x,offset_y))
@@ -139,7 +143,7 @@ def shoot():
     else:
         show_image(str(file_path)+'media/getready.jpg')
     sleep(2)
-    camera.iso = 1600
+    #camera.iso = 1600
     camera.rotation = 90
     camera.start_preview()
     countdown_overlay('test')
@@ -181,7 +185,7 @@ ausloser = 16
 debounce = 0.3 # how long to debounce the button. Add more time if the button triggers too many times.
 camera = picamera.PiCamera()
 camera.vflip =True
-camera.resolution =(1024,768)
+camera.resolution =(monitor_w,monitor_h)
 
 
 #GPIO setup
