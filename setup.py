@@ -33,5 +33,6 @@ print("python3 /home/pi/photobooth/photobooth.py")
 
 for x in range(10,0,-1):
     print('#rebooting in: '+str(x)+' seconds. Press ctrl+c to stop')
+    sleep(1)
 subprocess.call('sudo reboot', shell=True)
 
