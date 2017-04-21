@@ -33,8 +33,8 @@ transfrom_y = monitor_h # how high to scale the jpg when replaying
 pygame.display.set_mode((monitor_w, monitor_h))
 screen = pygame.display.get_surface()
 pygame.display.set_caption('Photo Booth Pics')
-pygame.mouse.set_visible(False) #hide the mouse cursor
-pygame.display.toggle_fullscreen()
+#pygame.mouse.set_visible(False) #hide the mouse cursor
+#pygame.display.toggle_fullscreen()
 def set_demensions(img_w, img_h):
 	# Note this only works when in booting in desktop mode. 
 	# When running in terminal, the size is not correct (it displays small). Why?
@@ -101,7 +101,7 @@ def starting():
     GPIO.output(7, GPIO.HIGH) 
     print('Montage')
     subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +50+50 "+str(file_path)+"/image1.jpg "+str(file_path)+"image2.jpg "+str(file_path)+"image3.jpg "+str(file_path)+"montage_temp.jpg", shell=True)
-    subprocess.call("composite -gravity center "+str(file_path)+"overlay.png  "+str(file_path)+"montage_temp.jpg  "+str(file_path)+"montage.jpg", shell = True)
+    subprocess.call("composite -gravity center "+str(file_path)+"media/overlay.png  "+str(file_path)+"montage_temp.jpg  "+str(file_path)+"montage.jpg", shell = True)
     # LED a
     zeit=time.strftime('%d-%I.%M.%S') 
     subprocess.call('sudo cp '+str(file_path)+'montage.jpg '+str(server_path)+'images/karte'+zeit+'.jpg', shell=True)
@@ -118,7 +118,7 @@ def starting():
     o.alpha = 255 #128
     o.layer = 3
     sleep(5)
-    show_image(str(file_path)+'intro.jpg')  
+    show_image(str(file_path)+'media/intro.jpg')  
     camera.remove_overlay(o)
     del img
     del pad
@@ -211,7 +211,7 @@ print('Press Ctrl+C to exit')
 
 # Dauersschleife
 while 1:
-  show_image(str(file_path)+'intro.jpg')  
+  show_image(str(file_path)+'media/intro.jpg')  
   for event in pygame.event.get():
   # Spiel beenden, wenn wir ein QUIT-Event finden.
       if event.type == pygame.QUIT:
