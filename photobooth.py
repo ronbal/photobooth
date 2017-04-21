@@ -151,7 +151,7 @@ def shoot():
     camera.stop_preview()
     sleep(1)
     camera.capture(str(file_path)+'image'+str(x)+'.jpg')
-    show_image(str(file_path)+'image'+str(x)+'.jpg')
+    #show_image(str(file_path)+'image'+str(x)+'.jpg')
     zeit=time.strftime('%d-%I.%M.%S') 
     subprocess.call('sudo cp '+str(file_path)+'image'+str(x)+'.jpg '+str(server_path)+'images/image'+zeit+'.jpg', shell=True)
     subprocess.call('sudo convert '+str(file_path)+'image'+str(x)+'.jpg -resize 320x240 '+str(server_path)+'thumbs/image'+zeit+'.jpg',shell=True)
@@ -185,7 +185,7 @@ ausloser = 16
 debounce = 0.3 # how long to debounce the button. Add more time if the button triggers too many times.
 camera = picamera.PiCamera()
 camera.vflip =True
-camera.resolution =(monitor_w,monitor_h)
+camera.resolution =(2048,1536)
 
 
 #GPIO setup
