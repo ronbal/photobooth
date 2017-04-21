@@ -14,7 +14,33 @@ Photobooth python Program by Ronny Schönfeld
 5. PHP5
 
 
-#Installation
+# automatic installation
+This manual starts with a newly installed raspbian.
+
+go to you home dir
+```
+cd /home/pi
+```
+clone this repository:
+```
+git clone https://github.com/ronbal/photobooth
+```
+change to the photobooth directory:
+```
+cd photobooth
+```
+start the setup script:
+```
+python3 setup.py
+```
+start the photobooth:
+```
+python3 photobooth.py
+```
+
+that's all!!! Have fun :-)
+
+# manual Installation
 
 ### first Update & upgrade
 ```
