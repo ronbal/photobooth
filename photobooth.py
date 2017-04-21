@@ -78,7 +78,7 @@ def set_demensions(img_w, img_h):
 
 def show_image(image_path):
 
-	# clear the screen
+	# clear the scren
 	screen.fill( (255,255,255))
 
 	# load the image
@@ -87,13 +87,13 @@ def show_image(image_path):
 
 	# set pixel dimensions based on image
 	set_demensions(img.get_width(), img.get_height())
-
+    
 #	print('transform x'+str(transform_x))
 #	print('transform y'+str(transform_y))
 #	print('monitor h'+str(monitor_h))
 #	print('monitor w'+str(monitor_w))
 	# rescale the image to fit the current display
-	img = pygame.transform.scale(img, (transform_x,transfrom_y))
+	img = pygame.transform.scale(img, (monitor_w,monitor_h))
 	screen.blit(img,(offset_x,offset_y))
 	pygame.display.flip()
 
@@ -121,8 +121,9 @@ def starting():
     o = camera.add_overlay(pad.tostring(), size=img.size)
     o.alpha = 255 #128
     o.layer = 3
+    
     sleep(5)
-    show_image(str(file_path)+'media/intro.jpg')  
+    show_image(str(file_path)+'media/intro.jpg')      
     camera.remove_overlay(o)
     del img
     del pad
@@ -151,10 +152,24 @@ def shoot():
     camera.stop_preview()
     sleep(1)
     camera.capture(str(file_path)+'image'+str(x)+'.jpg')
+    img = Image.open(str(file_path)+'image'+str(x)+'.jpg')
+    pad = Image.new('RGB', (
+      ((img.size[0] + 31) // 32) * 32,
+      ((img.size[1] + 15) // 16) * 16,
+      ))
+    pad.paste(img, (0, 0))
+    o = camera.add_overlay(pad.tostring(), size=img.size)
+    o.alpha = 255 #128
+    o.layer = 3
+
     #show_image(str(file_path)+'image'+str(x)+'.jpg')
     zeit=time.strftime('%d-%I.%M.%S') 
     subprocess.call('sudo cp '+str(file_path)+'image'+str(x)+'.jpg '+str(server_path)+'images/image'+zeit+'.jpg', shell=True)
     subprocess.call('sudo convert '+str(file_path)+'image'+str(x)+'.jpg -resize 320x240 '+str(server_path)+'thumbs/image'+zeit+'.jpg',shell=True)
+    sleep(3)
+    camera.remove_overlay(o)
+    del img
+    del pad
   return;
 
 
@@ -212,10 +227,10 @@ def check_light():
 		
 print('Push Button')
 print('Press Ctrl+C to exit')
-
+show_image(str(file_path)+'media/intro.jpg')  
 # Dauersschleife
 while 1:
-  show_image(str(file_path)+'media/intro.jpg')  
+  
   for event in pygame.event.get():
   # Spiel beenden, wenn wir ein QUIT-Event finden.
       if event.type == pygame.QUIT:
