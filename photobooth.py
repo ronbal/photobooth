@@ -14,84 +14,55 @@ import pygame
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 
 
-#############################
-### Variables that Change ###
-#############################
-# Do not change these variables, as the code will change it anyway
-
 
 offset_x = 0 # how far off to left corner to display photos
 offset_y = 0 # how far off to left corner to display photos
 file_path ="/home/pi/photobooth/" #path of the photobooth programm
 server_path="/var/www/html/" #path to the Webserverfiles
+debug = False #set to True for debugging
+
+#Variables to change as needed
+led_pin = 7    # LED pin
+btn_pin = 18   # pin for the button
+ausloser = 16
+debounce = 0.3 # how long to debounce the button. Add more time if the button triggers too many times.
+camera = picamera.PiCamera()
+camera.vflip =True
+camera.resolution =(2048,1536)
+
+
+#GPIO setup
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(led_pin,GPIO.OUT) # LED 
+GPIO.setup(btn_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # button
+GPIO.setup(ausloser, GPIO.IN, pull_up_down=GPIO.PUD_UP) # button
 
 # initialize pygame
 pygame.init()
-monitor_w, monitor_h = pygame.display.Info().current_w, pygame.display.Info().current_h
-transform_x = monitor_w # how wide to scale the jpg when replaying
-transfrom_y = monitor_h # how high to scale the jpg when replaying
-pygame.display.set_mode((monitor_w, monitor_h))
-screen = pygame.display.get_surface()
-pygame.display.set_caption('Photo Booth Pics')
-pygame.mouse.set_visible(False) #hide the mouse cursor
-pygame.display.toggle_fullscreen()
-def set_demensions(img_w, img_h):
-	# Note this only works when in booting in desktop mode. 
-	# When running in terminal, the size is not correct (it displays small). Why?
-
-    # connect to global vars
-    global transform_y, transform_x, offset_y, offset_x
-
-    #based on output screen resolution, calculate how to display
-#    ratio_h = (monitor_w * img_h) / img_w 
-
-#    if (ratio_h < monitor_h):
-        #Use horizontal black bars
-        #print "horizontal black bars"
-#        transform_y = ratio_h
-#        transform_x = monitor_w
-#        offset_y = (monitor_h - ratio_h) / 2
-#        offset_x = 0
-#    elif (ratio_h > monitor_h):
-        #Use vertical black bars
-        #print "vertical black bars"
-#        transform_x = (monitor_h * img_w) / img_h
-#        transform_y = monitor_h
-#        offset_x = (monitor_w - transform_x) / 2
-#        offset_y = 0
-#    else:
-        #No need for black bars as photo ratio equals screen ratio
-        #print "no black bars"
-    transform_x = monitor_w
-    transform_y = monitor_h
-    offset_y = offset_x = 0
-
-    # uncomment these lines to troubleshoot screen ratios
-#print((str(img_w)+" x "+ str(img_h))
-#print('ratio_h: '+str(ratio_h))
-#print("transform_x: "+ str(transform_x))
-#print("trans---form_y: "+ str(transform_y))
-#print("offset_y: "+ str(offset_y))
-#print("offset_x: "+ str(offset_x))
-
-# display one image on screen
+if debug is True:
+   monitor_w = 320
+   monitor_h = 240
+   pygame.display.set_mode((monitor_w, monitor_h))
+   screen = pygame.display.get_surface()
+   pygame.display.set_caption('Photo Booth Pics')
+   
+else:
+   monitor_w, monitor_h = pygame.display.Info().current_w, pygame.display.Info().current_h
+   pygame.mouse.set_visible(False) #hide the mouse cursor 
+   pygame.display.set_mode((monitor_w, monitor_h))
+   screen = pygame.display.get_surface()
+   pygame.display.set_caption('Photo Booth Pics')
+   pygame.display.toggle_fullscreen()
 
 def show_image(image_path):
 
-	# clear the scren
+	# clear the screen white
 	screen.fill( (255,255,255))
 
 	# load the image
 	img = pygame.image.load(image_path)
 	img = img.convert() 
 
-	# set pixel dimensions based on image
-	set_demensions(img.get_width(), img.get_height())
-    
-#	print('transform x'+str(transform_x))
-#	print('transform y'+str(transform_y))
-#	print('monitor h'+str(monitor_h))
-#	print('monitor w'+str(monitor_w))
 	# rescale the image to fit the current display
 	img = pygame.transform.scale(img, (monitor_w,monitor_h))
 	screen.blit(img,(offset_x,offset_y))
@@ -102,14 +73,15 @@ def starting():
     shoot()
     show_image(str(file_path)+'media/processing.jpg')    
     camera.stop_preview()
-    GPIO.output(7, GPIO.HIGH) 
-    print('Montage')
+    if debug is True:
+       print('Montage')
     subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +50+50 "+str(file_path)+"/image1.jpg "+str(file_path)+"image2.jpg "+str(file_path)+"image3.jpg "+str(file_path)+"montage_temp.jpg", shell=True)
     subprocess.call("composite -gravity center "+str(file_path)+"media/overlay.png  "+str(file_path)+"montage_temp.jpg  "+str(file_path)+"montage.jpg", shell = True)
     # LED a
     zeit=time.strftime('%d-%I.%M.%S') 
     subprocess.call('sudo cp '+str(file_path)+'montage.jpg '+str(server_path)+'images/karte'+zeit+'.jpg', shell=True)
-    print('collage')
+    if debug is True:
+        print('collage')
     subprocess.call('sudo convert '+str(file_path)+'montage.jpg -resize 320x240 '+str(server_path)+'thumbs/karte'+zeit+'.jpg',shell=True)
     GPIO.output(7, GPIO.LOW)
     img = Image.open(str(file_path)+'montage.jpg')
@@ -138,7 +110,8 @@ def delete():
 def shoot():
   y=3
   for x  in range(1,y+1):
-    print('Foto '+ str(x))
+    if debug is True:
+        print('Foto '+ str(x))
     if x >1:
         show_image(str(file_path)+'media/nextone.jpg')
     else:
@@ -177,7 +150,7 @@ def countdown_overlay(ggg):
   countdown=4
   
   for i  in range(countdown,0,-1):
-	#gc.collect()
+   
     img = Image.open(str(file_path)+'media/'+str(i)+'.jpg')
     pad = Image.new('RGB', (
       ((img.size[0] + 31) // 32) * 32,
@@ -193,21 +166,7 @@ def countdown_overlay(ggg):
   del pad
   return;
 
-#Variables to change as needed
-led_pin = 7    # LED pin
-btn_pin = 18   # pin for the button
-ausloser = 16
-debounce = 0.3 # how long to debounce the button. Add more time if the button triggers too many times.
-camera = picamera.PiCamera()
-camera.vflip =True
-camera.resolution =(2048,1536)
 
-
-#GPIO setup
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(led_pin,GPIO.OUT) # LED 
-GPIO.setup(btn_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # button
-GPIO.setup(ausloser, GPIO.IN, pull_up_down=GPIO.PUD_UP) # button
 
 def cleanup():
   print('Goodbye.')
@@ -224,9 +183,7 @@ def check_light():
 		GPIO.output(led_pin,False)
 		print("LED off")
 		camera.stop_preview()
-		
-print('Push Button')
-print('Press Ctrl+C to exit')
+
 show_image(str(file_path)+'media/intro.jpg')  
 # Dauersschleife
 while 1:
@@ -248,20 +205,19 @@ while 1:
           elif event.key == pygame.K_d:
               delete()
                   
-   # LED immer ausmachen
+   # LED off
   GPIO.output(7, GPIO.LOW)
 
-  # GPIO lesen
+  # read GPIO
   if GPIO.input(18) == GPIO.LOW:
-    # LED an
-    GPIO.output(7, GPIO.HIGH)
     pygame.quit()
     # Warte 100 ms
     time.sleep(0.1)
     
     
   if GPIO.input(16) == GPIO.LOW:
-    # LED an
+    # goto starting
+    GPIO.output(7, GPIO.HIGH)
     starting()
 
    
