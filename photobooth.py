@@ -4,7 +4,7 @@ import glob
 import RPi.GPIO as GPIO
 from time import sleep
 import atexit
-import picamera
+#import picamera
 import time
 import subprocess
 import os
@@ -26,9 +26,9 @@ led_pin = 7    # LED pin
 btn_pin = 18   # pin for the button
 ausloser = 16
 debounce = 0.3 # how long to debounce the button. Add more time if the button triggers too many times.
-camera = picamera.PiCamera()
-camera.vflip =True
-camera.resolution =(2048,1536)
+#camera = picamera.PiCamera()
+#camera.vflip =True
+#camera.resolution =(2048,1536)
 
 
 #GPIO setup
@@ -72,7 +72,7 @@ def starting():
     
     shoot()
     show_image(str(file_path)+'media/processing.jpg')    
-    camera.stop_preview()
+#    camera.stop_preview()
     if debug is True:
        print('Montage')
     subprocess.call("montage -geometry 960x540+ -tile 2x2 -background '#336699' -geometry +50+50 "+str(file_path)+"/image1.jpg "+str(file_path)+"image2.jpg "+str(file_path)+"image3.jpg "+str(file_path)+"montage_temp.jpg", shell=True)
@@ -96,7 +96,7 @@ def starting():
     
     sleep(5)
     show_image(str(file_path)+'media/intro.jpg')      
-    camera.remove_overlay(o)
+#    camera.remove_overlay(o)
     del img
     del pad
   
@@ -118,29 +118,29 @@ def shoot():
         show_image(str(file_path)+'media/getready.jpg')
     sleep(2)
     #camera.iso = 1600
-    camera.rotation = 90
-    camera.start_preview()
+#    camera.rotation = 90
+#    camera.start_preview()
     countdown_overlay('test')
     show_image(str(file_path)+'media/smile.jpg')
-    camera.stop_preview()
+#    camera.stop_preview()
     sleep(1)
-    camera.capture(str(file_path)+'image'+str(x)+'.jpg')
-    img = Image.open(str(file_path)+'image'+str(x)+'.jpg')
-    pad = Image.new('RGB', (
-      ((img.size[0] + 31) // 32) * 32,
-      ((img.size[1] + 15) // 16) * 16,
-      ))
-    pad.paste(img, (0, 0))
-    o = camera.add_overlay(pad.tostring(), size=img.size)
-    o.alpha = 255 #128
-    o.layer = 3
+#    camera.capture(str(file_path)+'image'+str(x)+'.jpg')
+#    img = Image.open(str(file_path)+'image'+str(x)+'.jpg')
+#    pad = Image.new('RGB', (
+#      ((img.size[0] + 31) // 32) * 32,
+#      ((img.size[1] + 15) // 16) * 16,
+#      ))
+#    pad.paste(img, (0, 0))
+#    o = camera.add_overlay(pad.tostring(), size=img.size)
+#    o.alpha = 255 #128
+#    o.layer = 3
 
     #show_image(str(file_path)+'image'+str(x)+'.jpg')
     zeit=time.strftime('%d-%I.%M.%S') 
     subprocess.call('sudo cp '+str(file_path)+'image'+str(x)+'.jpg '+str(server_path)+'images/image'+zeit+'.jpg', shell=True)
     subprocess.call('sudo convert '+str(file_path)+'image'+str(x)+'.jpg -resize 320x240 '+str(server_path)+'thumbs/image'+zeit+'.jpg',shell=True)
     sleep(3)
-    camera.remove_overlay(o)
+#    camera.remove_overlay(o)
     del img
     del pad
   return;
@@ -151,19 +151,19 @@ def countdown_overlay(ggg):
   
   for i  in range(countdown,0,-1):
    
-    img = Image.open(str(file_path)+'media/'+str(i)+'.jpg')
-    pad = Image.new('RGB', (
-      ((img.size[0] + 31) // 32) * 32,
-      ((img.size[1] + 15) // 16) * 16,
-      ))
-    pad.paste(img, (0, 0))
-    o = camera.add_overlay(pad.tostring(), size=img.size)
-    o.alpha = 90 #128
-    o.layer = 3
-    sleep(1)
-    camera.remove_overlay(o)
-  del img
-  del pad
+#    img = Image.open(str(file_path)+'media/'+str(i)+'.jpg')
+#    pad = Image.new('RGB', (
+#      ((img.size[0] + 31) // 32) * 32,
+#      ((img.size[1] + 15) // 16) * 16,
+#      ))
+#    pad.paste(img, (0, 0))
+#    o = camera.add_overlay(pad.tostring(), size=img.size)
+#    o.alpha = 90 #128
+#    o.layer = 3
+#    sleep(1)
+#    camera.remove_overlay(o)
+#  del img
+#  del pad
   return;
 
 
