@@ -5,13 +5,19 @@ The program shoots 3 Pictures per session. After shooting the Pictures the progr
 
 ### key features:
 -takes 3 photos in a session
+
 -combines the 3 photos to a collage
+
 -presents the single shots and the collage on a local webpage as a picture gallery
+
 
 ### Keyboard shortcuts are:
 spacebar: start photosession
+
 ESC:      quits the program
+
 d:        deletes all pictures from Webserver
+
 
 
 
