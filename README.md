@@ -3,10 +3,15 @@ a raspberry Pi photobooth.
 
 The program shoots 3 Pictures per session. After shooting the Pictures the program made a collage. Each picture and the collage is copied to /var/www/html/images. Thumbnails are automatically generated in /var/www/html/thumbs. Your guests can acces the Pictures via a Webgallery at http://yourip/
 
-Keyboard shortcuts are:
+### key features:
+-takes 3 photos in a session
+-combines the 3 photos to a collage
+-presents the single shots and the collage on a local webpage as a picture gallery
+
+### Keyboard shortcuts are:
 spacebar: start photosession
-ESC: quits the program 
-d: deletes all pictures from Webserver
+ESC:      quits the program
+d:        deletes all pictures from Webserver
 
 
 
