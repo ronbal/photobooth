@@ -1,6 +1,10 @@
 # Raspberry Pi photobooth
 a raspberry Pi photobooth.
 
+
+Update 05.05.19 all Errors are removed, the Photobooth is fully compatible with Raspbian Stretch. :-)
+
+
 The program shoots 3 Pictures per session. After shooting the Pictures the program made a collage. Each picture and the collage is copied to /var/www/html/images. Thumbnails are automatically generated in /var/www/html/thumbs. Your guests can acces the Pictures via a Webgallery at http://yourip/
 
 ### key features:
@@ -69,9 +73,9 @@ sudo apt-get upgrade
 ```
 sudo apt-get install apache2
 ```
-### install php5:
+### install php:
 ```
-sudo apt-get install php5
+sudo apt-get install php
 ```
 ### get the repository:
 ```
