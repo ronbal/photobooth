@@ -31,6 +31,7 @@ camera.vflip =True
 camera.resolution =(2048,1536)
 
 
+
 #GPIO setup
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(led_pin,GPIO.OUT) # LED 
@@ -90,7 +91,7 @@ def starting():
       ((img.size[1] + 15) // 16) * 16,
       ))
     pad.paste(img, (0, 0))
-    o = camera.add_overlay(pad.tostring(), size=img.size)
+    o = camera.add_overlay(pad.tobytes(), size=img.size)
     o.alpha = 255 #128
     o.layer = 3
     
@@ -120,6 +121,7 @@ def shoot():
     #camera.iso = 1600
     camera.rotation = 90
     camera.start_preview()
+    #for debugging: camera.start_preview(fullscreen=False, window = (100, 20, 640, 480))
     countdown_overlay('test')
     show_image(str(file_path)+'media/smile.jpg')
     camera.stop_preview()
@@ -131,8 +133,8 @@ def shoot():
       ((img.size[1] + 15) // 16) * 16,
       ))
     pad.paste(img, (0, 0))
-    o = camera.add_overlay(pad.tostring(), size=img.size)
-    o.alpha = 255 #128
+    o = camera.add_overlay(pad.tobytes(), size=img.size)
+    o.alpha = 128
     o.layer = 3
 
     #show_image(str(file_path)+'image'+str(x)+'.jpg')
@@ -157,7 +159,7 @@ def countdown_overlay(ggg):
       ((img.size[1] + 15) // 16) * 16,
       ))
     pad.paste(img, (0, 0))
-    o = camera.add_overlay(pad.tostring(), size=img.size)
+    o = camera.add_overlay(pad.tobytes(), size=img.size)
     o.alpha = 90 #128
     o.layer = 3
     sleep(1)
